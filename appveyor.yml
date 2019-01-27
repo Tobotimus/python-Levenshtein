@@ -1,0 +1,26 @@
+environment:
+  TWINE_USERNAME: "<YOUR_PYPI_USERNAME>"
+#  TWINE_PASSWORD:
+#    secure: "<YOUR_ENCRYPTED_PYPI_PASSWORD>"
+
+install:
+  - pip install -e .
+
+before_build:
+  - pip install twine cibuildwheel
+
+build_script:
+  - cibuildwheel --output-dir wheelhouse
+
+test_script:
+  - python setup.py test
+
+artifacts:
+  - path: "wheelhouse\\*.whl"
+    name: Wheels
+
+deploy_script:
+  - ps: |
+      If ($env:APPVEYOR_REPO_TAG -eq "true") {
+          & twine upload --skip-existing wheelhouse/*.whl
+      }
