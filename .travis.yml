@@ -1,12 +1,36 @@
 language: python
-python:
-  - "2.6"
-  - "2.7"
-  - "3.2"
-  - "3.3"
 
-# command to install dependencies
-install: "python setup.py develop"
+matrix:
+  include:
+    - os: linux
+      dist: xenial
+      sudo: required
+      python: 3.7.2
+      services:
+      - docker
+      env: CIBW_BEFORE_BUILD="rm -rf build/"
+    - os: osx
+      language: generic
 
-# command to run tests
-script: "python setup.py test"
+install:
+  - pip3 install setuptools
+  - pip3 install -e .
+
+script:
+  - python3 setup.py test
+
+env:
+  global:
+    - TWINE_USERNAME=Tobotimus
+    - secure: dcFsJEbJ557W4LJW5hZwwASJxxkkHwm7UUB4A+bjoPlV4Q3KN67TJzUIcR/08gGPChLU4zbCngjS/NYwXWKHGVfM1fD5tDhpMF/QyBUx6l0zwJ5KQ5XADEYTbDF9Bdha3grk8kBBkPLEOfrchZOd5AXYt01og71RxhGIgutRL0X5UetrCF0lnnD4p2DvktF1hk1/qH7dgh+/pIrFAJ+6hNqFpMpDdaSxw49H2jSVs1mp2WptJFmVvelAwopqHH5kkHwOOm4P4DDM3EnmJ3CcQ7UJaG8xrwwQVpC1cRpoMQ0eaLdgMHu2zATzBow3Age70WQ2bMyow8tyffP2a+7/R/nDCjpJLXci32TtX+040KAfu56fPl9T36SKYNSP8GY19AYqShNRjYqvdFoT2HPRUkDXy8618uXqTnzQyUnVozICYYKrqb3kzFM6uOo+pasZyoB0KkZReMUg2inUa6g566z5lowpLYG7qA7UQd7vEpv6bguQn46Th8XTkRp4EPVCieeM1pxs8EcmZLD+5ip031jSBnHPGiIi9y/bw780hNvXiR8g1ifwfTaX6uk6FTg2vhHUV1uRTLPqrOCC8zdiFjgnNk+JXtNZyc0yHk04lztVuV6Y/uawrk57+iIJryVTMO6b1P5OfhQU9wwWvwVwG3L8iHd02Ckb89CggNOrUgc=
+
+before_deploy:
+  - pip3 install -U twine https://github.com/YannickJadoul/cibuildwheel/tarball/f876231da4adeca96636411da067fc234733a6f5#egg=cibuildwheel
+  - cibuildwheel --output-dir wheelhouse
+
+deploy:
+  provider: script
+  script: "twine upload --skip-existing wheelhouse/*.whl"
+  skip_cleanup: true
+  on:
+    tags: true
