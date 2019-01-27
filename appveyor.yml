@@ -12,9 +12,6 @@ before_build:
 build_script:
   - cibuildwheel --output-dir wheelhouse
 
-test_script:
-  - python setup.py test
-
 artifacts:
   - path: "wheelhouse\\*.whl"
     name: Wheels

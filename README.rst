@@ -3,6 +3,15 @@
 Introduction
 ------------
 
+This is a fork of `python-Levenshtein <https://github.com/ztane/python-Levenshtein>`_ which also
+distributes binary wheels for a lot of operating systems and architectures:
+
+* Windows (amd64 and x86)
+* OSX (10.6+)
+* Linux (x86_64 and i686)
+
+The wheels can be installed with the ``python-Levenshtein-wheels`` package on PyPI.
+
 The Levenshtein Python C extension module contains functions for fast
 computation of
 
@@ -69,12 +78,12 @@ Source code
 Authors
 -------
 
-* Maintainer: `Antti Haapala <antti@haapala.name>`
+* Maintainer: `Toby Harradine <me@tobyharradine.id.au>`
 
 * Python 3 compatibility: Esa Määttä
 
 * Jonatas CD: Fixed documentation generation
 
-* Previous maintainer: `Mikko Ohtamaa <http://opensourcehacker.com>`_
+* Previous maintainers: `Antti Haapala <antti@haapala.name>`, `Mikko Ohtamaa <http://opensourcehacker.com>`_
 
 * Original code: David Necas (Yeti) <yeti at physics.muni.cz>

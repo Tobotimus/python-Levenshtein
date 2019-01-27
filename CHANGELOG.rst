@@ -2,6 +2,11 @@
  Changelog
 ============
 
+0.12.1
+------
+
+* Distributed with wheels.
+
 0.12.0
 ------
 
