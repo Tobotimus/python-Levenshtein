@@ -27,6 +27,7 @@ env:
 before_deploy:
   - pip3 install -U twine https://github.com/YannickJadoul/cibuildwheel/tarball/f876231da4adeca96636411da067fc234733a6f5#egg=cibuildwheel
   - cibuildwheel --output-dir wheelhouse
+  - python3 setup.py sdist --dist-dir wheelhouse
 
 deploy:
   provider: script
