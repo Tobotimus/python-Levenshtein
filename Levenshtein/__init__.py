@@ -6,5 +6,5 @@ except ImportError:
 else:
     __doc__ = _levenshtein.__doc__
 
-__version__ = "0.13.0"
+__version__ = "0.13.1"
 __author__ = "Antti Haapala"
