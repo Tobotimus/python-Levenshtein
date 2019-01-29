@@ -31,7 +31,7 @@ before_deploy:
 
 deploy:
   provider: script
-  script: "twine upload --skip-existing wheelhouse/*.whl"
+  script: "twine upload --skip-existing wheelhouse/*"
   skip_cleanup: true
   on:
     tags: true
