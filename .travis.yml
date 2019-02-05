@@ -25,12 +25,13 @@ env:
     # - secure: <YOUR_ENCRYPTED_PYPI_PASSWORD>
 
 before_deploy:
-  - pip3 install -U twine https://github.com/YannickJadoul/cibuildwheel/tarball/f876231da4adeca96636411da067fc234733a6f5#egg=cibuildwheel
-  - cibuildwheel --output-dir wheelhouse
+  - pip3 install -r deploy-requirements.txt
+  - cibuildwheel --output-dir dist
+  - python3 setup.py sdist --dist-dir dist
 
 deploy:
   provider: script
-  script: "twine upload --skip-existing wheelhouse/*.whl"
+  script: "twine upload --skip-existing dist/*"
   skip_cleanup: true
   on:
     tags: true

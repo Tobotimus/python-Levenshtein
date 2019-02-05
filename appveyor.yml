@@ -7,20 +7,20 @@ install:
   - pip install -e .
 
 before_build:
-  - pip install twine cibuildwheel
+  - pip install -r deploy-requirements.txt
 
 build_script:
-  - cibuildwheel --output-dir wheelhouse
+  - cibuildwheel --output-dir dist
 
 test_script:
   - python setup.py test
 
 artifacts:
-  - path: "wheelhouse\\*.whl"
+  - path: "dist\\*.whl"
     name: Wheels
 
 deploy_script:
   - ps: |
       If ($env:APPVEYOR_REPO_TAG -eq "true") {
-          & twine upload --skip-existing wheelhouse/*.whl
+          & twine upload --skip-existing dist/*.whl
       }
