@@ -21,6 +21,8 @@ matrix:
       language: shell
       before_install:
         - choco install python3 --version 3.8.0 --no-progress -y
+        - ls /c/Python36/
+        - ls /c/Python36/Scripts/
       env:
         - PATH=/c/Python36:/c/Python36/Scripts:$PATH
         - PYTHON=python
