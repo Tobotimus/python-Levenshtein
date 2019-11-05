@@ -27,8 +27,8 @@ install:
   - $PYTHON -m pip install --upgrade pip setuptools
   - $PYTHON -m pip install -e .
 
-build:
-  - echo "Build stage"
+script:
+  - echo "Script stage"
 
 env:
   global:
