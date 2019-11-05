@@ -11,26 +11,23 @@ matrix:
       env:
         - CIBW_BEFORE_BUILD="rm -rf build/"
         - PYTHON=python3
-        - PIP=pip3
     - os: osx
       language: generic
       env:
         - PYTHON=python3
-        - PIP=pip3
     - os: windows
       language: shell
       before_install:
         - choco install python3 --version 3.8.0 --no-progress -y
-        - ls /c/Python36/
-        - ls /c/Python36/Scripts/
+        - ls /c/Python38/
+        - ls /c/Python38/Scripts/
       env:
-        - PATH=/c/Python36:/c/Python36/Scripts:$PATH
+        - PATH=/c/Python38:/c/Python38/Scripts:$PATH
         - PYTHON=python
-        - PIP=pip
 
 install:
-  - $PIP install --upgrade setuptools
-  - $PIP install -e .
+  - $PYTHON -m pip install --upgrade setuptools
+  - $PYTHON -m pip install -e .
 
 script:
   - $PYTHON setup.py test
