@@ -11,10 +11,12 @@ matrix:
       env:
         - CIBW_BEFORE_BUILD="rm -rf build/"
         - PYTHON=python3
+        - PIP=pip3
     - os: osx
       language: generic
       env:
         - PYTHON=python3
+        - PIP=pip3
     - os: windows
       language: shell
       before_install:
@@ -22,10 +24,11 @@ matrix:
       env:
         - PATH=/c/Python36:/c/Python36/Scripts:$PATH
         - PYTHON=python
+        - PIP=pip
 
 install:
-  - $PYTHON -m pip install --upgrade pip setuptools
-  - $PYTHON -m pip install -e .
+  - $PIP install --upgrade setuptools
+  - $PIP install -e .
 
 script:
   - $PYTHON setup.py test
