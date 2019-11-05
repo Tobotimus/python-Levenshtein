@@ -19,18 +19,13 @@ matrix:
       language: shell
       before_install:
         - choco install python3 --version 3.8.0 --no-progress -y
-        - ls /c/Python38/
-        - ls /c/Python38/Scripts/
       env:
         - PATH=/c/Python38:/c/Python38/Scripts:$PATH
         - PYTHON=python
 
 install:
-  - $PYTHON -m pip install --upgrade setuptools
+  - $PYTHON -m pip install --upgrade pip setuptools
   - $PYTHON -m pip install -e .
-
-script:
-  - $PYTHON setup.py test
 
 env:
   global:
@@ -38,9 +33,9 @@ env:
     - secure: dcFsJEbJ557W4LJW5hZwwASJxxkkHwm7UUB4A+bjoPlV4Q3KN67TJzUIcR/08gGPChLU4zbCngjS/NYwXWKHGVfM1fD5tDhpMF/QyBUx6l0zwJ5KQ5XADEYTbDF9Bdha3grk8kBBkPLEOfrchZOd5AXYt01og71RxhGIgutRL0X5UetrCF0lnnD4p2DvktF1hk1/qH7dgh+/pIrFAJ+6hNqFpMpDdaSxw49H2jSVs1mp2WptJFmVvelAwopqHH5kkHwOOm4P4DDM3EnmJ3CcQ7UJaG8xrwwQVpC1cRpoMQ0eaLdgMHu2zATzBow3Age70WQ2bMyow8tyffP2a+7/R/nDCjpJLXci32TtX+040KAfu56fPl9T36SKYNSP8GY19AYqShNRjYqvdFoT2HPRUkDXy8618uXqTnzQyUnVozICYYKrqb3kzFM6uOo+pasZyoB0KkZReMUg2inUa6g566z5lowpLYG7qA7UQd7vEpv6bguQn46Th8XTkRp4EPVCieeM1pxs8EcmZLD+5ip031jSBnHPGiIi9y/bw780hNvXiR8g1ifwfTaX6uk6FTg2vhHUV1uRTLPqrOCC8zdiFjgnNk+JXtNZyc0yHk04lztVuV6Y/uawrk57+iIJryVTMO6b1P5OfhQU9wwWvwVwG3L8iHd02Ckb89CggNOrUgc=
 
 before_deploy:
-  - pip3 install -r deploy-requirements.txt
+  - $PYTHON -m pip install -r deploy-requirements.txt
   - cibuildwheel --output-dir dist
-  - python3 setup.py sdist --dist-dir dist
+  - $PYTHON setup.py sdist --dist-dir dist
 
 deploy:
   provider: script
