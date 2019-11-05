@@ -27,6 +27,9 @@ install:
   - $PYTHON -m pip install --upgrade pip setuptools
   - $PYTHON -m pip install -e .
 
+build:
+  - echo "Build stage"
+
 env:
   global:
     - TWINE_USERNAME=Tobotimus
