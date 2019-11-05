@@ -7,23 +7,28 @@ matrix:
       sudo: required
       python: 3.8.0
       services:
-      - docker
-      env: CIBW_BEFORE_BUILD="rm -rf build/"
+        - docker
+      env:
+        - CIBW_BEFORE_BUILD="rm -rf build/"
+        - PYTHON=python3
     - os: osx
       language: generic
+      env:
+        - PYTHON=python3
     - os: windows
       language: shell
       before_install:
-       - choco install python3 --version 3.8.0 --no-progress -y
+        - choco install python3 --version 3.8.0 --no-progress -y
       env:
-       - PATH=/c/Python36:/c/Python36/Scripts:$PATH
+        - PATH=/c/Python36:/c/Python36/Scripts:$PATH
+        - PYTHON=python
 
 install:
-  - pip3 install setuptools
-  - pip3 install -e .
+  - $PYTHON -m pip install --upgrade pip setuptools
+  - $PYTHON -m pip install -e .
 
 script:
-  - python3 setup.py test
+  - $PYTHON setup.py test
 
 env:
   global:
