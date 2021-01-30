@@ -1,2 +1,0 @@
-https://github.com/joerick/cibuildwheel/tarball/0375e92110113689025a5f05376f77d220d8b5c9#egg=cibuildwheel
-twine==2.0.0
