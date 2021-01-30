@@ -1,49 +1,31 @@
 language: python
-
 jobs:
   include:
-    # perform a linux build
-    - services: docker
-    # perform a linux ARMv8 build
-    - services: docker
-      arch: arm64
-    # perform a linux PPC64LE build
-    - services: docker
-      arch: ppc64le
-    # perform a linux S390X build
-    - services: docker
-      arch: s390x
-    # and a mac build
-    - os: osx
-      language: shell
-    # and a windows build
-    - os: windows
-      language: shell
-      before_install:
-        - choco install python --version 3.8.0
-        - export PATH="/c/Python38:/c/Python38/Scripts:$PATH"
-        # make sure it's on PATH as 'python3'
-        - ln -s /c/Python38/python.exe /c/Python38/python3.exe
-
+  - services: docker
+  - services: docker
+    arch: arm64
+  - services: docker
+    arch: ppc64le
+  - services: docker
+    arch: s390x
+  - os: osx
+    language: shell
+  - os: windows
+    language: shell
+    before_install:
+    - choco install python --version 3.8.0
+    - export PATH="/c/Python38:/c/Python38/Scripts:$PATH"
+    - ln -s /c/Python38/python.exe /c/Python38/python3.exe
 install:
-  - python3 -m pip install cibuildwheel==1.8.0
-
+- python3 -m pip install cibuildwheel==1.8.0
 script:
-  # build the wheels, put them into './wheelhouse'
-  - python3 -m cibuildwheel --output-dir wheelhouse
-
-env:
-  global:
-    - TWINE_USERNAME=Tobotimus
-    - secure: dcFsJEbJ557W4LJW5hZwwASJxxkkHwm7UUB4A+bjoPlV4Q3KN67TJzUIcR/08gGPChLU4zbCngjS/NYwXWKHGVfM1fD5tDhpMF/QyBUx6l0zwJ5KQ5XADEYTbDF9Bdha3grk8kBBkPLEOfrchZOd5AXYt01og71RxhGIgutRL0X5UetrCF0lnnD4p2DvktF1hk1/qH7dgh+/pIrFAJ+6hNqFpMpDdaSxw49H2jSVs1mp2WptJFmVvelAwopqHH5kkHwOOm4P4DDM3EnmJ3CcQ7UJaG8xrwwQVpC1cRpoMQ0eaLdgMHu2zATzBow3Age70WQ2bMyow8tyffP2a+7/R/nDCjpJLXci32TtX+040KAfu56fPl9T36SKYNSP8GY19AYqShNRjYqvdFoT2HPRUkDXy8618uXqTnzQyUnVozICYYKrqb3kzFM6uOo+pasZyoB0KkZReMUg2inUa6g566z5lowpLYG7qA7UQd7vEpv6bguQn46Th8XTkRp4EPVCieeM1pxs8EcmZLD+5ip031jSBnHPGiIi9y/bw780hNvXiR8g1ifwfTaX6uk6FTg2vhHUV1uRTLPqrOCC8zdiFjgnNk+JXtNZyc0yHk04lztVuV6Y/uawrk57+iIJryVTMO6b1P5OfhQU9wwWvwVwG3L8iHd02Ckb89CggNOrUgc=
-
-before_deploy:
-  - python3 -m pip install twine
-  - python3 setup.py sdist --dist-dir wheelhouse
-
+- python3 -m cibuildwheel --output-dir wheelhouse
+- python3 setup.py sdist --dist-dir wheelhouse
 deploy:
-  provider: script
-  script: "twine upload --skip-existing dist/*"
+  provider: pypi
+  username: __token__
   skip_cleanup: true
   on:
     tags: true
+  password:
+    secure: m37ngwHF76pqGF2GHOSrp+enLsFvrCCfxmGW/PhmysxlFUZ7LZsOQSHJG2+XRX9m9l2NI4H5rPmQ6lzDjFk+IebBOtoLPI95mgDrUW4jpVLuoMhLOk0SiwR/q7pRGOxaTNknuvS6zlSO4ZMef4ktrTp++oPIch8phE3Z+IxUJZVo4N2nhwX8RIuy/6ixK71kqheIZJzm43/Y0Hae7Ldh5IaZlFWabIukbKgOLO++sZVZViCpT6IGyBLPkjBWEIAg7fM18BYW356y26/OQpxFdWyQwrL57TN58cE3CdaTtrct0mOpkHoJqrVijRLE4dyDl0+kjjkzhNMcRy68KiOtIM4dCbOOd8Eq/wNaUrso599b5cZMB6OjHxm/2LyPUyLJvmumpPgenFcwtaxb4ChBBj7pMSUM99yza4ybvPa30TqZQqdOdPNP/+7wad6y9+VIaWdjAjmN9QmpK6icdW1GGVJDCDWv4V0SMtppnU3wj+pyxRneYQQ7juM5nQ2eA8m1DGYJjd9Fd++n5dRx27cx2KtsAOZXqbpf+174t/ZUGJnAfHKwzIfg9SfsQZcm3scZWv40rY3vX/hzQfhKKI9yttxBH2T8E/WevUBgLo0pd8GpcmPEqaoUSkQIOVhoDf/DAe8Uh5+CKk6s+gU4ezR4iDmzKAQVGt72vFAjJevM39k=
