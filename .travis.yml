@@ -1,34 +1,36 @@
 language: python
 
-matrix:
+jobs:
   include:
-    - os: linux
-      dist: xenial
-      sudo: required
-      python: 3.8.0
-      services:
-        - docker
-      env:
-        - CIBW_BEFORE_BUILD="rm -rf build/"
-        - PYTHON=python3
+    # perform a linux build
+    - services: docker
+    # perform a linux ARMv8 build
+    - services: docker
+      arch: arm64
+    # perform a linux PPC64LE build
+    - services: docker
+      arch: ppc64le
+    # perform a linux S390X build
+    - services: docker
+      arch: s390x
+    # and a mac build
     - os: osx
-      language: generic
-      env:
-        - PYTHON=python3
+      language: shell
+    # and a windows build
     - os: windows
       language: shell
       before_install:
-        - choco install python3 --version 3.8.0 --no-progress -y
-      env:
-        - PATH=/c/Python38:/c/Python38/Scripts:$PATH
-        - PYTHON=python
+        - choco install python --version 3.8.0
+        - export PATH="/c/Python38:/c/Python38/Scripts:$PATH"
+        # make sure it's on PATH as 'python3'
+        - ln -s /c/Python38/python.exe /c/Python38/python3.exe
 
 install:
-  - $PYTHON -m pip install --upgrade pip setuptools
-  - $PYTHON -m pip install -e .
+  - python3 -m pip install cibuildwheel==1.8.0
 
 script:
-  - echo "Script stage"
+  # build the wheels, put them into './wheelhouse'
+  - python3 -m cibuildwheel --output-dir wheelhouse
 
 env:
   global:
@@ -36,9 +38,8 @@ env:
     - secure: dcFsJEbJ557W4LJW5hZwwASJxxkkHwm7UUB4A+bjoPlV4Q3KN67TJzUIcR/08gGPChLU4zbCngjS/NYwXWKHGVfM1fD5tDhpMF/QyBUx6l0zwJ5KQ5XADEYTbDF9Bdha3grk8kBBkPLEOfrchZOd5AXYt01og71RxhGIgutRL0X5UetrCF0lnnD4p2DvktF1hk1/qH7dgh+/pIrFAJ+6hNqFpMpDdaSxw49H2jSVs1mp2WptJFmVvelAwopqHH5kkHwOOm4P4DDM3EnmJ3CcQ7UJaG8xrwwQVpC1cRpoMQ0eaLdgMHu2zATzBow3Age70WQ2bMyow8tyffP2a+7/R/nDCjpJLXci32TtX+040KAfu56fPl9T36SKYNSP8GY19AYqShNRjYqvdFoT2HPRUkDXy8618uXqTnzQyUnVozICYYKrqb3kzFM6uOo+pasZyoB0KkZReMUg2inUa6g566z5lowpLYG7qA7UQd7vEpv6bguQn46Th8XTkRp4EPVCieeM1pxs8EcmZLD+5ip031jSBnHPGiIi9y/bw780hNvXiR8g1ifwfTaX6uk6FTg2vhHUV1uRTLPqrOCC8zdiFjgnNk+JXtNZyc0yHk04lztVuV6Y/uawrk57+iIJryVTMO6b1P5OfhQU9wwWvwVwG3L8iHd02Ckb89CggNOrUgc=
 
 before_deploy:
-  - $PYTHON -m pip install -r deploy-requirements.txt
-  - cibuildwheel --output-dir dist
-  - $PYTHON setup.py sdist --dist-dir dist
+  - python3 -m pip install twine
+  - python3 setup.py sdist --dist-dir wheelhouse
 
 deploy:
   provider: script
