@@ -33,6 +33,8 @@ install:
 script:
 - python3 -m cibuildwheel --output-dir wheelhouse
 - python3 setup.py sdist --dist-dir wheelhouse
+before_deploy:
+- python3 -m pip install -U twine
 deploy:
   provider: script
   script: twine upload --skip-existing wheelhouse/*
