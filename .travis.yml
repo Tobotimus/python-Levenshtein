@@ -34,11 +34,8 @@ script:
 - python3 -m cibuildwheel --output-dir wheelhouse
 - python3 setup.py sdist --dist-dir wheelhouse
 deploy:
-  provider: pypi
-  username: __token__
+  provider: script
+  script: twine upload --skip-existing wheelhouse/*
   skip_cleanup: true
-  skip_existing: true
   on:
     tags: true
-  password:
-    secure: m37ngwHF76pqGF2GHOSrp+enLsFvrCCfxmGW/PhmysxlFUZ7LZsOQSHJG2+XRX9m9l2NI4H5rPmQ6lzDjFk+IebBOtoLPI95mgDrUW4jpVLuoMhLOk0SiwR/q7pRGOxaTNknuvS6zlSO4ZMef4ktrTp++oPIch8phE3Z+IxUJZVo4N2nhwX8RIuy/6ixK71kqheIZJzm43/Y0Hae7Ldh5IaZlFWabIukbKgOLO++sZVZViCpT6IGyBLPkjBWEIAg7fM18BYW356y26/OQpxFdWyQwrL57TN58cE3CdaTtrct0mOpkHoJqrVijRLE4dyDl0+kjjkzhNMcRy68KiOtIM4dCbOOd8Eq/wNaUrso599b5cZMB6OjHxm/2LyPUyLJvmumpPgenFcwtaxb4ChBBj7pMSUM99yza4ybvPa30TqZQqdOdPNP/+7wad6y9+VIaWdjAjmN9QmpK6icdW1GGVJDCDWv4V0SMtppnU3wj+pyxRneYQQ7juM5nQ2eA8m1DGYJjd9Fd++n5dRx27cx2KtsAOZXqbpf+174t/ZUGJnAfHKwzIfg9SfsQZcm3scZWv40rY3vX/hzQfhKKI9yttxBH2T8E/WevUBgLo0pd8GpcmPEqaoUSkQIOVhoDf/DAe8Uh5+CKk6s+gU4ezR4iDmzKAQVGt72vFAjJevM39k=
