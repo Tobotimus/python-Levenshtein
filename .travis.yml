@@ -37,7 +37,7 @@ before_deploy:
 - python3 -m pip install -U twine
 deploy:
   provider: script
-  script: twine upload --skip-existing wheelhouse/*
+  script: python3 -m twine upload --skip-existing wheelhouse/*
   skip_cleanup: true
   on:
     tags: true
